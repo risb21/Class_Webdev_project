@@ -1,0 +1,80 @@
+:root {
+  --colour1: #001427;
+  --colour2: #23875c;
+  --colour3: #d2a94b;
+  --colour4: #bf0603;
+  --colour5: #8d0801;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--colour3);
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.header {
+  font-size: 6vh;
+  width: 100%;
+  /*height: 10vh;*/
+  background-color: var(--colour5);
+  display: flex;
+  justify-content: space-between;
+}
+
+.header > div {
+  width: 50%;
+  /*background-color: rgba(255, 255, 255, 0.5);*/
+}
+
+#right {
+  font-size: 4vh;
+  text-align: right;
+  display: block;
+  height: 12vh;
+  display: flex;
+  justify-content: right;
+}
+
+#right > a {
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  padding: 3vh 1vh 0 1vh;
+  margin: 0;
+  display: block;
+  /* height: 10vh; */
+  text-decoration: none;
+  color: var(--colour2);
+  transition: background-color 100ms ease-in-out;
+}
+
+#right > a:link {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+#right > a:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+
+#left {
+  padding: 2vh 0 2vh 0.5em;
+}
+
+.loginsignup {
+  background-color: rgba(0,0,0,0.2);
+  position: absolute;
+  width: 100%;
+  height: 100% - 20vh;
+  visibility: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 20vh 0 0 0;
+}
+
+.popup {
+  background-color: white;
+}
+
+.body {
+  height: 90vh;
+  background-color: var(--colour1);
+}
