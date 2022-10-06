@@ -76,7 +76,7 @@ body {
 }
 
 .form-div {
-  width: 40%;
+  width: 45%;
   background-color: rgb(79, 79, 79);
   height: 100%;
   transition: all 200ms ease-out;
@@ -84,10 +84,35 @@ body {
 
 form {
   font-size: 4vh;
+  width: 100%;
+  padding: 1em 0 0 0;
+  text-align: left;
+}
+
+form > label {
+  text-align: left;
+  font-size: 3vh;
 }
 
 input {
   border: 0;
+  font-size: 2vh;
+  padding: 5px;
+  width: 15em;
+  border-radius: 5px;
+}
+
+#password-log {
+  width: 13em;
+  border-radius: 5px 0 0 5px;
+}
+
+.eye {
+  background-color:#160505;
+  width: 2em;
+  border-radius: 0 5px 5px 0;
+  font-size: 2vh;
+  padding: 5px;
 }
 
 form > a {
