@@ -15,8 +15,10 @@ let formDiv = document.getElementsByClassName("form-div")[0];
 function tosign() {
     signForm.style.visibility = "visible";
     signForm.style.height = "100%";
+    signForm.style.opacity = "100%";
     logForm.style.visibility = "hidden";
     logForm.style.height = "0%";
+    logForm.style.opacity = "0%";
     logForm.style.padding = "0 0 0 0";
     formDiv.style.margin = " 0 0 0 55%";
 }
@@ -24,8 +26,10 @@ function tosign() {
 function tolog() {
     signForm.style.visibility = "hidden";
     signForm.style.height = "0%";
+    signForm.style.opacity = "0%";
     logForm.style.visibility = "visible";
     logForm.style.height = "100%";
+    logForm.style.opacity = "100%";
     logForm.style.padding = "1.5em 0 0 1.5em";
     formDiv.style.margin = "0 0 0 0%";
 }
