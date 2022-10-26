@@ -77,23 +77,22 @@
             }
         }
 
-        print_r($validNums);
-        echo "<br>";
+        while (!empty($validNums)) {
+            print_r($validNums);
+            echo "<br>";
 
-        if (empty($validNums)) {
-            return false;
-        }
+            if (empty($validNums)) {
+                return false;
+            }
 
-        $board[$rowInd][$colInd] = $validNums[array_rand($validNums, 1)];
-        printer($board, 0);
-        if (Solver($board, $rowInd + floor(($colInd + 1)/9), ($colInd + 1) % 9)) {
-            return true;
-        }
-        
-        $board[$rowInd][$colInd] = 0;
-
-        if (Solver($board, $rowInd, $colInd)) {
-            return true;
+            $board[$rowInd][$colInd] = $validNums[array_rand($validNums, 1)];
+            printer($board, 0);
+            if (Solver($board, $rowInd + floor(($colInd + 1)/9), ($colInd + 1) % 9)) {
+                return true;
+            }
+            
+            $validNums = array_diff($validNums, [$board[$rowInd][$colInd]]);
+            $board[$rowInd][$colInd] = 0;
         }
 
         printer($board, 0);
@@ -110,8 +109,4 @@
     printer($board, 0);
 
     // Attempting to make a Sudoku solver
-
-
-    
-     
 ?>
