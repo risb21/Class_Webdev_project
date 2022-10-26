@@ -12,6 +12,16 @@ let signForm = document.getElementsByClassName("signupForm")[0];
 let logForm = document.getElementsByClassName("loginForm")[0];
 let formDiv = document.getElementsByClassName("form-div")[0];
 
+var regex = /^\d/;
+
+function onInput(e) {
+    var currentVal = e.target.value;
+
+    if (!currentVal.match(regex)) {
+        console.log("The value entered was a digit");
+    }
+}
+
 function tosign() {
     signForm.style.visibility = "visible";
     signForm.style.height = "100%";
