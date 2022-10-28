@@ -55,27 +55,7 @@
         $col = getCol($board, $colInd);     // Gets values in row, column and box to follow sudoku rules
         $box = getBox($board, $rowInd, $colInd);
 
-        // for ($x = 0; $x < 9; $x++) {
-        //     if ($row[$x]) {
-        //         if ($key = array_search($row[$x], $validVals) !== false) {
-        //             unset($validVals[$key]);
-        //         }
-        //     }
-        // }
-        // for ($x = 0; $x < 9; $x++) {
-        //     if ($col[$x]) {
-        //         if ($key = array_search($col[$x], $validVals) !== false) {
-        //             unset($validVals[$key]);
-        //         }
-        //     }
-        // }
-        // for ($x = 0; $x < 9; $x++) {
-        //     if ($box[$x]) {
-        //         if ($key = array_search($box[$x], $validVals) !== false) {
-        //             unset($validVals[$key]);
-        //         }
-        //     }
-        // }
+        // Removing elements common in valid values for a cell, and its row, column and box
         $validVals = array_diff($validVals, $row);
         $validVals = array_diff($validVals, $col);
         $validVals = array_diff($validVals, $box);
@@ -124,6 +104,8 @@
         return false;
     }
     
+    // Removes random values, checks validity and prepares a solvable puzzle board
+
     function puzzleMaker($board, $difficulty, $validIndex) {
 
         // Mapping difficulty from 0 to 1 to number of iterations (from 25 to 53)
@@ -141,7 +123,8 @@
             $oldVal = $puzzle[$randRow][$randCol];
             $puzzle[$randRow][$randCol] = 0;
             if (isValid($board, $puzzle)) {
-                $validIndex = array_diff($validIndex, [$validIndex[$randIndex]]);
+                unset($validIndex[$randIndex]);
+                // array_diff is unnecessary here because a single value is to be removed and randIndex is definitely in the array
                 --$diffMap;  
                 // Removes the index from validIndex array and decrements no. of cells to remove if puzzle is solvable
             } else {
@@ -167,7 +150,11 @@
             $SolvedAgain = $board;
         }
         return true;
-    }
+    }   /* if 2 solutions are not alike, there will be multiple solutions for the same puzzle
+           I could go for more iterations, but 3 hasn't failed me yet and it would increase computational cost
+           This needs to be avoided if in the future I need to verify each value from the user */
+
+    /* Testing and display of output */
 
     $difficulty = 0.75;
 
@@ -192,7 +179,7 @@
     
     $start = microtime(true);   // Calculating time at the start of computation
     $puzzle = puzzleMaker($board, $difficulty, $validIndex);
-    
+
     $count = 0;
     while (!isUnique($puzzle)) {
         if (($count + 1) % 11) {
@@ -205,28 +192,19 @@
                 }
             }
             Solver($board, 0, 0);
-
+            
             $puzzle = puzzleMaker($board, $difficulty, $validIndex);
         }
         $count++;
-    }
+    }   // Making sure that the resultant puzzle is unique
 
     $end = microtime(true);
+
     echo "<br>";
     printer($board);
     printer($puzzle);
     echo 'Took ' . $count . ' iteration';
     echo $count == 1 ? '<br>' : 's<br>';
     echo 'Done in: ' . $end - $start . ' s<br>';
-
-    $test = [1,2,3,4,5,6,7,8,9];
-    for ($x = 0; $x < 9; $x++) {
-        $key = array_rand($test, 1);
-        echo '<br>'.$test[$key].' Will be unset ';
-        unset($test[$key]);
-        print_r($test);
-    }
-    
-    
 
 ?>
