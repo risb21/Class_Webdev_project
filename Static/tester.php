@@ -8,11 +8,11 @@
                     echo "|";
                 }
                 if ($board[$i][$j]) {
-                    echo '&nbsp&nbsp&nbsp'.$board[$i][$j];
+                    echo '&nbsp&nbsp'.$board[$i][$j] . '&nbsp';
                 } else {
                     echo '&nbsp&nbsp&nbsp&nbsp&nbsp';
                 }
-                if (!($j % 3 - 2)) {
+                if (!(($j + 1) % 3)) {
                     echo "|";
                 }
                 if (!($i%3 - 2) && $j == 8) {
@@ -55,31 +55,42 @@
         $col = getCol($board, $colInd);     // Gets values in row, column and box to follow sudoku rules
         $box = getBox($board, $rowInd, $colInd);
 
-        foreach ($row as $val) {
-            if ($val) {
-                $validVals = array_diff($validVals, [$val]);
-            }   // array_diff will remove specified value from the array like a set operation
-        }
-        foreach ($col as $val) {
-            if ($val) {
-                $validVals = array_diff($validVals, [$val]);
-            }
-        }
-        foreach ($box as $val) {
-            if ($val) {
-                $validVals = array_diff($validVals, [$val]);
-            }
-        }
+        // for ($x = 0; $x < 9; $x++) {
+        //     if ($row[$x]) {
+        //         if ($key = array_search($row[$x], $validVals) !== false) {
+        //             unset($validVals[$key]);
+        //         }
+        //     }
+        // }
+        // for ($x = 0; $x < 9; $x++) {
+        //     if ($col[$x]) {
+        //         if ($key = array_search($col[$x], $validVals) !== false) {
+        //             unset($validVals[$key]);
+        //         }
+        //     }
+        // }
+        // for ($x = 0; $x < 9; $x++) {
+        //     if ($box[$x]) {
+        //         if ($key = array_search($box[$x], $validVals) !== false) {
+        //             unset($validVals[$key]);
+        //         }
+        //     }
+        // }
+        $validVals = array_diff($validVals, $row);
+        $validVals = array_diff($validVals, $col);
+        $validVals = array_diff($validVals, $box);
+
         return $validVals;
     }
 
     // Recursive Backtracking function to fill the board
-    
+
     function Solver(&$board, $rowInd, $colInd) {
         if ($rowInd > 8) {
             return true;    // Checks if board is full
         }
         if ($board[$rowInd][$colInd] == 0){
+
             $validNums = validValues($board, $rowInd, $colInd);
     
             while (!empty($validNums)) {
@@ -106,33 +117,42 @@
         }
     }
 
+    // Will verify if the board is solvable after removal of a value from the puzzle board
+
     function isValid($board, $puzzle) {
         if (Solver($puzzle, 0, 0) == $board) { return true; }
         return false;
     }
     
-    function puzzleMaker($board, &$puzzle, $difficulty) {
+    function puzzleMaker($board, $difficulty, $validIndex) {
 
-        // Mapping difficulty from 0 to 1 to number of iterations
-        $diffMap = floor($difficulty * 53); 
+        // Mapping difficulty from 0 to 1 to number of iterations (from 25 to 53)
+        $diffMap = floor($difficulty * 28) + 25;
+
+        $puzzle = $board;
+
         while ($diffMap) {
             
-            // Random indices to remove
-            $randRow = rand() % 9;
-            $randCol = rand() % 9;
-    
-            if ($puzzle[$randRow][$randCol]) {
+            $randIndex = array_rand($validIndex, 1);
+            $randRow = floor($validIndex[$randIndex] / 9);
+            $randCol = $validIndex[$randIndex] % 9;
+            // Generating random value indices to remove (ensures value chosen is not 0)
 
-                $oldState = $puzzle[$randRow][$randCol];
-                $puzzle[$randRow][$randCol] = 0;
-                if (isValid($board, $puzzle)) { 
-                    --$diffMap;
-                } else {
-                    $puzzle[$randRow][$randCol] = $oldState;
-                }
+            $oldVal = $puzzle[$randRow][$randCol];
+            $puzzle[$randRow][$randCol] = 0;
+            if (isValid($board, $puzzle)) {
+                $validIndex = array_diff($validIndex, [$validIndex[$randIndex]]);
+                --$diffMap;  
+                // Removes the index from validIndex array and decrements no. of cells to remove if puzzle is solvable
+            } else {
+                $puzzle[$randRow][$randCol] = $oldVal;
+                // If puzzle is not solvable, old value is restored
             }
         }
+
+        return $puzzle;
     }
+
 
     function isUnique($board) {
         $SolvedOnce = $board;
@@ -149,7 +169,12 @@
         return true;
     }
 
-    $difficulty = 1;
+    $difficulty = 0.75;
+
+    $validIndex = array();
+    for ($i = 0; $i < 81; $i++) {
+        $validIndex[$i] = $i;
+    }
     
     $start = microtime(true);   // Calculating time at the start of computation
     $board = array(array());
@@ -163,26 +188,25 @@
     Solver($board, 0, 0);
     printer($board);
     $end = microtime(true);
-    echo 'Done in: ' . ($end - $start) * 1000 . 'ms';
+    echo 'Done in: ' . ($end - $start) * 1000 . ' ms';
     
-    $puzzle = $board;
     $start = microtime(true);   // Calculating time at the start of computation
-    puzzleMaker($board, $puzzle, $difficulty);
+    $puzzle = puzzleMaker($board, $difficulty, $validIndex);
     
     $count = 0;
     while (!isUnique($puzzle)) {
-        if ($count % 10) {
-            $puzzle = $board;
-            puzzleMaker($board, $puzzle, $difficulty);
+        if (($count + 1) % 11) {
+            $puzzle = puzzleMaker($board, $difficulty, $validIndex);
         } else {
+            // After every 10 tries per board, reset values in the board and solve again
             for ($i = 0; $i < 9; $i++) {
                 for ($j = 0; $j < 9; $j++) {
                     $board[$i][$j] = 0;
                 }
             }
             Solver($board, 0, 0);
-            $puzzle = $board;
-            puzzleMaker($board, $puzzle, $difficulty);
+
+            $puzzle = puzzleMaker($board, $difficulty, $validIndex);
         }
         $count++;
     }
@@ -191,7 +215,18 @@
     echo "<br>";
     printer($board);
     printer($puzzle);
-    echo 'Took ' . $count . ' iterations<br>';
+    echo 'Took ' . $count . ' iteration';
+    echo $count == 1 ? '<br>' : 's<br>';
     echo 'Done in: ' . $end - $start . ' s<br>';
+
+    $test = [1,2,3,4,5,6,7,8,9];
+    for ($x = 0; $x < 9; $x++) {
+        $key = array_rand($test, 1);
+        echo '<br>'.$test[$key].' Will be unset ';
+        unset($test[$key]);
+        print_r($test);
+    }
     
+    
+
 ?>
