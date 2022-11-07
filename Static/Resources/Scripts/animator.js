@@ -9,18 +9,8 @@ let signForm = document.getElementsByClassName("signupForm")[0];
 let logForm = document.getElementsByClassName("loginForm")[0];
 let formDiv = document.getElementsByClassName("form-div")[0];
 
-var regex = /^\d/;
-
-function onInput(e) {
-    var currentVal = e.target.value;
-
-    if (!currentVal.match(regex)) {
-        console.log("The value entered was a digit");
-    }
-}
-
 function highlight( e ) {
-    var cellNo = Number(e.slice(-2));
+    var cellNo = Number(e.id.slice(-2));
     if (cellNo <= 0) {
         cellNo *= -1;
     }
@@ -41,13 +31,17 @@ function highlight( e ) {
             ) {
             ex.style.filter = "opacity(85%)";
         }
+        if (ex.value == cells[cellNo].value && cells[cellNo].value) {
+            ex.style.filter = "opacity(70%)";
+        }
         if (cellNoEach == row * 9 + col) {
             ex.style.filter = "opacity(70%)";
         }
     });
 }
+
 function unfocus( e ) {
-    var cellNo = Number(e.slice(-2));
+    var cellNo = Number(e.id.slice(-2));
     if (cellNo <= 0) {
         cellNo *= -1;
     }
@@ -66,6 +60,9 @@ function unfocus( e ) {
         || col == cellNoEach % 9
         || (Math.floor(eachRow/3) == Math.floor(row/3) 
             && Math.floor(eachCol/3) == Math.floor(col/3))) {
+            ex.style = null;
+        }
+        if (ex.value == cells[cellNo].value) {
             ex.style = null;
         }
     });
@@ -136,19 +133,34 @@ toLog.onclick = () => {
 
 const cells = document.getElementsByClassName('cell');
 // Array.from(cells).forEach( (e) => {
-//         e.addEventListener("focusin", highlight(e.id));
-//         e.addEventListener("focusout", unfocus(e.id));
+//         e.addEventListener("focusin", highlight(e));
+//         e.addEventListener("focusout", unfocus(e));
 // });
 // const cells = document.getElementsByClassName('cell');
+
+Array.from(cells).forEach( (e) => {
+    e.addEventListener("click", () => {
+        let end = e.value.length;
+        e.setSelectionRange(end, end);
+        e.focus();
+    })
+});
 
 Array.from(cells).forEach( (e) => {
     e.addEventListener("input", () => {
         if (e.value.length > 1) {
             if (/[1-9]/.test(e.value[1])) {
                 if (e.value[1] == e.value[0]) {
+                    e.value = e.value[0];
+                    unfocus(e);
                     e.value = null;
+                    highlight(e);
                 } else {
-                    e.value = e.value[1];
+                    let temp = e.value;
+                    e.value = temp[0];
+                    unfocus(e);
+                    e.value = temp[1];
+                    highlight(e);
                 }
             } else {
                 e.value = e.value[0];
@@ -157,6 +169,7 @@ Array.from(cells).forEach( (e) => {
             if (!(/[1-9]/.test(e.value))) {
                 e.value = null;
             }
+            highlight(e);
         }
     })
 })
