@@ -5,7 +5,7 @@
   --colour4: #bf0603;
   --colour5: #8d0801;
   --cell-size: 3vw;
-  --sudoku-border-colour: rgb(95, 211, 53);
+  --sudoku-border-colour: rgb(109, 108, 108);
   --sudoku-border-size: 6px
 }
 
@@ -72,6 +72,7 @@ body {
 
 .popup {
   margin: 20vh;
+  z-index: 50;
   background-color: rgb(37, 37, 37);
   border-radius: 20px;
   overflow: hidden;
@@ -80,6 +81,7 @@ body {
 }
 
 .form-div {
+  z-index: 100;
   width: 45%;
   background-color: rgb(79, 79, 79);
   height: 100%;
@@ -137,10 +139,13 @@ form > a {
 }
 
 .cell {
+  z-index: 2;
   width: var(--cell-size);
   height: var(--cell-size);
   text-align: center;
-  color: green;
+  color: black;
+  caret-color: transparent;
+  font-size: 1.5vw;
   border-radius: 0;
   border: none;
   padding: 0;
@@ -149,7 +154,7 @@ form > a {
 
 .cell:focus { 
   outline: none;
-  box-shadow: 0 0 5px inset rgba(0, 0, 0, 0.5);
+  /* box-shadow: 0 0 5px inset rgba(0, 0, 0, 0.5); */
 }
 
 table {
