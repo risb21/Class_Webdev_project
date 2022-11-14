@@ -156,7 +156,7 @@
 
     /* Testing and display of output */
 
-    $difficulty = 1;
+    $difficulty = 0.75;
 
     $validIndex = array();
     for ($i = 0; $i < 81; $i++) {

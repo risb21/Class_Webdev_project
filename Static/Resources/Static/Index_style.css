@@ -4,7 +4,7 @@
   --colour3: #d2a94b;
   --colour4: #bf0603;
   --colour5: #8d0801;
-  --cell-size: 3vw;
+  --cell-size: 4vw;
   --sudoku-border-colour: rgb(109, 108, 108);
   --sudoku-border-size: 6px
 }
@@ -12,12 +12,14 @@
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
   color: var(--colour3);
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
 .header {
   font-size: 6vh;
+  height: 12vh;
   width: 100%;
   /*height: 10vh;*/
   background-color: var(--colour5);
@@ -131,11 +133,14 @@ form > a {
 
 .grid-div {
   visibility: visible;
+  flex: 3;
 }
 
 .body {
-  height: 90vh;
+  height: 88vh;
   background-color: var(--colour1);
+  display: flex;
+  flex-direction: row;
 }
 
 .cell {
@@ -145,7 +150,7 @@ form > a {
   text-align: center;
   color: black;
   caret-color: transparent;
-  font-size: 1.5vw;
+  font-size: 1.75vw;
   border-radius: 0;
   border: none;
   padding: 0;
@@ -158,6 +163,7 @@ form > a {
 }
 
 table {
+  margin: auto auto;
   white-space: nowrap;
   border: 0;
   border-collapse: collapse;
@@ -183,16 +189,66 @@ td:nth-child(3n+1) {
   border-left: solid var(--sudoku-border-size) var(--sudoku-border-colour);
 }
 
-tr:nth-child(3n) > td{
+tr:nth-child(3n){
   border-bottom: solid var(--sudoku-border-size) var(--sudoku-border-colour);
 }
 
-tr:nth-child(3n+1) > td{
+tr:nth-child(3n+1){
   border-top: solid var(--sudoku-border-size) var(--sudoku-border-colour);
 }
 
 /* each cell border */
 
 td {
+  text-align: center;
   border: solid calc(var(--sudoku-border-size)/2 )var(--sudoku-border-colour);
+}
+
+.numpad {
+  flex: 2;
+}
+
+.num{
+  border: none;
+  padding: auto;
+}
+
+.numpadCont {
+  background-color: white;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: auto auto;
+  width: 60%;
+  border-radius: 2rem;
+  overflow: hidden;
+  height: 50%;
+}
+
+.aCont {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.aCont > a {
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  font-size: 3vw;
+  text-align: center;
+}
+
+.aCont:nth-child(n){
+  border-right: black solid 2px;
+}
+
+.aCont:nth-child(n){
+  border-bottom: black solid 2px;
+}
+
+.aCont:nth-child(3n){
+  border-right: none;
+}
+.aCont:nth-child(9n), .aCont:nth-child(8n), .aCont:nth-child(7n){
+  border-bottom: none;
 }

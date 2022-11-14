@@ -9,7 +9,12 @@ let signForm = document.getElementsByClassName("signupForm")[0];
 let logForm = document.getElementsByClassName("loginForm")[0];
 let formDiv = document.getElementsByClassName("form-div")[0];
 
+
+let newPrev = null;
+
+// Highlights box, row, col and value in cell
 function highlight( e ) {
+    if (newPrev) { unfocus(newPrev); }
     var cellNo = Number(e.id.slice(-2));
     if (cellNo <= 0) {
         cellNo *= -1;
@@ -38,6 +43,7 @@ function highlight( e ) {
             ex.style.filter = "opacity(70%)";
         }
     });
+    focussedInd = cellNo;
 }
 
 function unfocus( e ) {
@@ -66,6 +72,7 @@ function unfocus( e ) {
             ex.style = null;
         }
     });
+    focussedInd = -1;
 }
 
 function tosign() {
@@ -138,12 +145,31 @@ const cells = document.getElementsByClassName('cell');
 // });
 // const cells = document.getElementsByClassName('cell');
 
+// Sets cursor to the end, consistent input
 Array.from(cells).forEach( (e) => {
     e.addEventListener("click", () => {
         let end = e.value.length;
         e.setSelectionRange(end, end);
         e.focus();
     })
+});
+
+Array.from(cells).forEach( (e) => {
+    e.addEventListener("focusin", (event) => {
+        highlight(e);
+        prevFocus = document.activeElement;
+        console.log(prevFocus);
+        // console.log(event.relatedTarget)
+    });
+});
+
+Array.from(cells).forEach( (e) => {
+    e.addEventListener("focusout", (event) => {
+        unfocus(e);
+        
+        // prevFocus = event.relatedTarget;
+        // console.log(prevFocus);
+    });
 });
 
 Array.from(cells).forEach( (e) => {
@@ -174,6 +200,13 @@ Array.from(cells).forEach( (e) => {
     })
 })
 
+// Array.from(cells).forEach( (e) => {
+//     e.addEventListener("focusout", (event => {
+//         event.stopPropagation();
+//         prevFocus = document.activeElement;
+//     }))
+// });
+
 eyeBtn1 = document.getElementsByClassName("eye")[0];
 pw1 = document.getElementById("password-log");
 
@@ -190,3 +223,54 @@ document.body.onkeydown = (event) => {
         hideOverlay();
     }
 }
+
+let numpad = document.getElementsByClassName("num");
+let sentinel = true;
+let prevFocus = null;
+let sent2 = true;
+let prev = false;
+
+Array.from(numpad).forEach((e) => {
+    e.onclick = () => {
+        sent2 = false;
+        console.log("hi");
+    }
+    e.addEventListener("click", () => {
+        // sent2 = false;
+
+        console.log(e.target);
+        // if (sentinel || prev) {
+            console.log(newPrev);
+            var cellNo = Number(e.id.slice(-2));
+            if (cellNo <= 0) {
+                cellNo *= -1;
+            }
+            // unfocus(prevFocus);
+            if (prevFocus.value == e.innerHTML) {
+                unfocus(prevFocus)
+                prevFocus.value = null;
+            } else {
+                unfocus(prevFocus);
+                prevFocus.value = e.innerHTML;
+                // console.log("HI");
+            }
+            var cellNo = Number(e.id.slice(-2));
+            if (cellNo <= 0) {
+                cellNo *= -1;
+            }
+            highlight(prevFocus);
+            newPrev = prevFocus;
+            prev = true;
+        // }
+    });
+});
+
+document.body.addEventListener("click", () => {
+    if (sent2) {
+        sentinel = false;
+        prev = false;
+    } else {
+        sentinel = true;
+        prev = true;
+    }
+});
