@@ -1,6 +1,4 @@
 <?php 
-session_start()
-$_SESSION;
 ?>
 <!DOCTYPE html>
 <html lang="en">
