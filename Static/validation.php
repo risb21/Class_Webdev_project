@@ -15,6 +15,21 @@
         if ($pw != $repw) {
             return [false, "Entered Passwords don't match."];
         }
-        return[true, $email];
+        return[true, 'signup' ,$email];
+    }
+    
+    function validLogIn($unameoremail, $pw) {
+        if (strpos($unameoremail, ";") === true) {
+            return [false, "Invalid Username."];
+        }
+        if (strpos($pw, ";") === true) {
+            return [false, "Invalid Password."];
+        }
+        $email = filter_var($unameoremail, FILTER_SANITIZE_EMAIL);
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return [true, "login", "email", $email];
+        } else {
+            return [true, "login", "username", $unameoremail];
+        }
     }
 ?>

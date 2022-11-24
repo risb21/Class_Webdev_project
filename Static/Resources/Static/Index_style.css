@@ -41,22 +41,31 @@ body {
   justify-content: right;
 }
 
-#right > a {
+#right > a, #LO{
   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  padding: 3vh 1vh 0 1vh;
+  padding: 3.7vh 1vh 0 1vh;
   margin: 0;
   display: block;
-  /* height: 10vh; */
   text-decoration: none;
   color: var(--colour2);
   transition: background-color 150ms ease-in-out;
+}
+
+#LO {
+  background: transparent;
+  font-size: 4vh;
+  width: auto;
+  padding: 0 1vh 0 1vh;
+  margin: 0;
+  height: 100%;
+  border-radius: 0;
 }
 
 #right > a:link {
   background-color: rgba(255, 255, 255, 0);
 }
 
-#right > a:hover {
+#right > a:hover, #LO:hover {
   background-color: rgba(0,0,0,0.1);
 }
 

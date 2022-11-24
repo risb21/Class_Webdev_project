@@ -130,6 +130,11 @@ overlay.onclick = () => {
     }
 };
 
+function toLogout() {
+    document.getElementById("logout").submit();
+    return false;
+}
+
 toSign.onclick = () => {
     tosign();
 }
