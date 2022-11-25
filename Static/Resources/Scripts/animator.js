@@ -9,6 +9,9 @@ let signForm = document.getElementsByClassName("signupForm")[0];
 let logForm = document.getElementsByClassName("loginForm")[0];
 let formDiv = document.getElementsByClassName("form-div")[0];
 
+var sBoard, sPuzzle;
+sPuzzleArr = Array();
+sBoardArr = Array();
 
 let newPrev = null;
 
@@ -163,7 +166,7 @@ Array.from(cells).forEach( (e) => {
     e.addEventListener("focusin", (event) => {
         highlight(e);
         prevFocus = document.activeElement;
-        console.log(prevFocus);
+        // console.log(prevFocus);
         // console.log(event.relatedTarget)
     });
 });
@@ -177,21 +180,42 @@ Array.from(cells).forEach( (e) => {
     });
 });
 
+/* Listens to inputs to cells, handles highlighting for 
+each cell, and will also handle mistakes counter. */
 Array.from(cells).forEach( (e) => {
     e.addEventListener("input", () => {
+        let index = e.id.slice(-2)
+        if (index <= 0) {
+            index *= -1;
+        }
         if (e.value.length > 1) {
+            console.log(e.classList);
             if (/[1-9]/.test(e.value[1])) {
                 if (e.value[1] == e.value[0]) {
-                    e.value = e.value[0];
-                    unfocus(e);
-                    e.value = null;
-                    highlight(e);
+                    if (e.classList.contains("fixed")) {
+                        e.value = e.value[0];
+                    } else {
+                        e.value = e.value[0];
+                        unfocus(e);
+                        e.value = null;
+                        highlight(e);
+                    }
                 } else {
-                    let temp = e.value;
-                    e.value = temp[0];
-                    unfocus(e);
-                    e.value = temp[1];
-                    highlight(e);
+                    if (e.classList.contains("fixed")) {
+                        e.value = e.value[0];
+                    } else {
+                        let temp = e.value;
+                        e.value = temp[0];
+                        unfocus(e);
+                        e.value = temp[1];
+                        highlight(e);
+                        if (Number(e.value) == sBoardArr[Math.floor(index/9)][index%9]) {
+                            console.log("equal: ", e.value, " and ", sBoardArr[Math.floor(index/9)][index%9]);
+                        } else {
+                            console.log("Not equal!");
+                            e.style.background = "#EE6666";
+                        }
+                    }                 
                 }
             } else {
                 e.value = e.value[0];
@@ -199,6 +223,13 @@ Array.from(cells).forEach( (e) => {
         } else {
             if (!(/[1-9]/.test(e.value))) {
                 e.value = null;
+            } else {
+                if (Number(e.value) == sBoardArr[Math.floor(index/9)][index%9]) {
+                    console.log("equal: ", e.value, " and ", sBoardArr[Math.floor(index/9)][index%9]);
+                } else {
+                    console.log("Not equal!");
+                    e.style.background = "#EE6666";
+                }
             }
             highlight(e);
         }
