@@ -69,10 +69,10 @@ function unfocus( e ) {
         || col == cellNoEach % 9
         || (Math.floor(eachRow/3) == Math.floor(row/3) 
             && Math.floor(eachCol/3) == Math.floor(col/3))) {
-            ex.style = null;
+            ex.style.filter = null;
         }
         if (ex.value == cells[cellNo].value) {
-            ex.style = null;
+            ex.style.filter = null;
         }
     });
     focussedInd = -1;
