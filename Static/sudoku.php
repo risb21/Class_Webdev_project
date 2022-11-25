@@ -154,57 +154,92 @@
            I could go for more iterations, but 3 hasn't failed me yet and it would increase computational cost
            This needs to be avoided if in the future I need to verify each value from the user */
 
-    /* Testing and display of output */
-
-    $difficulty = 0.75;
-
-    $validIndex = array();
-    for ($i = 0; $i < 81; $i++) {
-        $validIndex[$i] = $i;
-    }
-    
-    $start = microtime(true);   // Calculating time at the start of computation
-    $board = array(array());
-    
-    for ($i = 0; $i < 9; $i++) {
-        for ($j = 0; $j < 9; $j++) {
-            $board[$i][$j] = 0;
+    function makeUniquePuzzle($diff) {
+        $validIndex = array();
+        for ($i = 0; $i < 81; $i++) {
+            $validIndex[$i] = $i;
         }
-    }
-    
-    Solver($board, 0, 0);
-    printer($board);
-    $end = microtime(true);
-    echo 'Done in: ' . ($end - $start) * 1000 . ' ms';
-    
-    $start = microtime(true);   // Calculating time at the start of computation
-    $puzzle = puzzleMaker($board, $difficulty, $validIndex);
-
-    $count = 0;
-    while (!isUnique($puzzle)) {
-        if (($count + 1) % 11) {
-            $puzzle = puzzleMaker($board, $difficulty, $validIndex);
-        } else {
-            // After every 10 tries per board, reset values in the board and solve again
-            for ($i = 0; $i < 9; $i++) {
-                for ($j = 0; $j < 9; $j++) {
-                    $board[$i][$j] = 0;
-                }
+        
+        $board = array(array());
+        
+        for ($i = 0; $i < 9; $i++) {
+            for ($j = 0; $j < 9; $j++) {
+                $board[$i][$j] = 0;
             }
-            Solver($board, 0, 0);
-            
-            $puzzle = puzzleMaker($board, $difficulty, $validIndex);
         }
-        $count++;
-    }   // Making sure that the resultant puzzle is unique
+        
+        Solver($board, 0, 0);
+        $puzzle = puzzleMaker($board, $diff, $validIndex);
+        
+        $count = 0;
+        while (!isUnique($puzzle)) {
+            if (!($count + 1) % 11) {
+                // After every 10 tries per board, reset values in the board and solve again
+                for ($i = 0; $i < 9; $i++) {
+                    for ($j = 0; $j < 9; $j++) {
+                        $board[$i][$j] = 0;
+                    }
+                }
+                Solver($board, 0, 0);
+            }
+            $puzzle = puzzleMaker($board, $diff, $validIndex);
+            $count++;
+        }
 
-    $end = microtime(true);
+        return [$board, $puzzle];
+    }
+    
+    // /* Testing and display of output */
 
-    echo "<br>";
-    printer($board);
-    printer($puzzle);
-    echo 'Took ' . $count . ' iteration';
-    echo $count == 1 ? '<br>' : 's<br>';
-    echo 'Done in: ' . $end - $start . ' s<br>';
+    // $difficulty = 0.75;
+
+    // $validIndex = array();
+    // for ($i = 0; $i < 81; $i++) {
+    //     $validIndex[$i] = $i;
+    // }
+    
+    // $start = microtime(true);   // Calculating time at the start of computation
+    // $board = array(array());
+    
+    // for ($i = 0; $i < 9; $i++) {
+    //     for ($j = 0; $j < 9; $j++) {
+    //         $board[$i][$j] = 0;
+    //     }
+    // }
+    
+    // Solver($board, 0, 0);
+    // printer($board);
+    // $end = microtime(true);
+    // echo 'Done in: ' . ($end - $start) * 1000 . ' ms';
+    
+    // $start = microtime(true);   // Calculating time at the start of computation
+    // $puzzle = puzzleMaker($board, $difficulty, $validIndex);
+
+    // $count = 0;
+    // while (!isUnique($puzzle)) {
+    //     if (($count + 1) % 11) {
+    //         $puzzle = puzzleMaker($board, $difficulty, $validIndex);
+    //     } else {
+    //         // After every 10 tries per board, reset values in the board and solve again
+    //         for ($i = 0; $i < 9; $i++) {
+    //             for ($j = 0; $j < 9; $j++) {
+    //                 $board[$i][$j] = 0;
+    //             }
+    //         }
+    //         Solver($board, 0, 0);
+            
+    //         $puzzle = puzzleMaker($board, $difficulty, $validIndex);
+    //     }
+    //     $count++;
+    // }   // Making sure that the resultant puzzle is unique
+
+    // $end = microtime(true);
+
+    // echo "<br>";
+    // printer($board);
+    // printer($puzzle);
+    // echo 'Took ' . $count . ' iteration';
+    // echo $count == 1 ? '<br>' : 's<br>';
+    // echo 'Done in: ' . $end - $start . ' s<br>';
 
 ?>
