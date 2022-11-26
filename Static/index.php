@@ -16,7 +16,7 @@ include 'sudoku.php';
         ?>
         <div class="body">
             <div class="grid-div">
-                <table id="grid">
+                <table id="grid" style="filter: blur(8px);">
                     <tr>
                         <td><input id="cell-0" class="cell" type="text" value="5" ></td>
                         <td><input id="cell-1" class="cell" type="text" value="3" ></td>

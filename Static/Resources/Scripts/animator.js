@@ -9,6 +9,9 @@ let signForm = document.getElementsByClassName("signupForm")[0];
 let logForm = document.getElementsByClassName("loginForm")[0];
 let formDiv = document.getElementsByClassName("form-div")[0];
 
+let sTable = document.getElementById("grid");
+sTable.boxShadow = "20px black";
+
 var sBoard, sPuzzle;
 sPuzzleArr = Array();
 sBoardArr = Array();
@@ -37,13 +40,13 @@ function highlight( e ) {
             || (Math.floor(eachRow/3) == Math.floor(row/3) &&
                 Math.floor(eachCol/3) == Math.floor(col/3))
             ) {
-            ex.style.filter = "opacity(85%)";
+            ex.style.filter = "brightness(92%)";
         }
         if (ex.value == cells[cellNo].value && cells[cellNo].value) {
-            ex.style.filter = "opacity(70%)";
+            ex.style.filter = "brightness(83%)";
         }
         if (cellNoEach == row * 9 + col) {
-            ex.style.filter = "opacity(70%)";
+            ex.style.filter = "brightness(83%)";
         }
     });
     focussedInd = cellNo;
@@ -189,7 +192,6 @@ Array.from(cells).forEach( (e) => {
             index *= -1;
         }
         if (e.value.length > 1) {
-            console.log(e.classList);
             if (/[1-9]/.test(e.value[1])) {
                 if (e.value[1] == e.value[0]) {
                     if (e.classList.contains("fixed")) {
@@ -199,6 +201,7 @@ Array.from(cells).forEach( (e) => {
                         unfocus(e);
                         e.value = null;
                         highlight(e);
+                        e.style.background = null;
                     }
                 } else {
                     if (e.classList.contains("fixed")) {
@@ -211,9 +214,10 @@ Array.from(cells).forEach( (e) => {
                         highlight(e);
                         if (Number(e.value) == sBoardArr[Math.floor(index/9)][index%9]) {
                             console.log("equal: ", e.value, " and ", sBoardArr[Math.floor(index/9)][index%9]);
+                            e.style.color = null;
                         } else {
                             console.log("Not equal!");
-                            e.style.background = "#EE6666";
+                            e.style.color = "#EE3333";
                         }
                     }                 
                 }
@@ -226,9 +230,10 @@ Array.from(cells).forEach( (e) => {
             } else {
                 if (Number(e.value) == sBoardArr[Math.floor(index/9)][index%9]) {
                     console.log("equal: ", e.value, " and ", sBoardArr[Math.floor(index/9)][index%9]);
+                    e.style.color = null;
                 } else {
                     console.log("Not equal!");
-                    e.style.background = "#EE6666";
+                    e.style.color = "#EE3333";
                 }
             }
             highlight(e);
@@ -301,12 +306,14 @@ Array.from(numpad).forEach((e) => {
     });
 });
 
-document.body.addEventListener("click", () => {
-    if (sent2) {
-        sentinel = false;
-        prev = false;
-    } else {
-        sentinel = true;
-        prev = true;
-    }
-});
+
+
+// document.body.addEventListener("click", () => {
+//     if (sent2) {
+//         sentinel = false;
+//         prev = false;
+//     } else {
+//         sentinel = true;
+//         prev = true;
+//     }
+// });

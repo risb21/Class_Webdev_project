@@ -1,12 +1,12 @@
 :root {
-  --colour1: #001427;
+  --colour1: ivory;
   --colour2: #23875c;
   --colour3: #d2a94b;
   --colour4: #bf0603;
   --colour5: #8d0801;
-  --cell-size: 4vw;
-  --sudoku-border-colour: rgb(109, 108, 108);
-  --sudoku-border-size: 6px
+  --cell-size: 8vh;
+  --sudoku-border-colour: black;
+  --sudoku-border-size: 4px
 }
 
 body {
@@ -29,6 +29,7 @@ body {
 
 .header > div {
   width: 50%;
+  z-index: 5;
   /*background-color: rgba(255, 255, 255, 0.5);*/
 }
 
@@ -141,8 +142,20 @@ form > a {
 }
 
 .grid-div {
+  height: 100%;
+  top: 50%;
   visibility: visible;
   flex: 3;
+  /* background: #222222; */
+  margin: 0;
+  padding: 0;
+  /* display: block; */
+}
+
+#grid {
+  margin: auto auto;
+  transition: 0.2s ease-out filter 0.1s;
+  box-shadow: 20px black;
 }
 
 .body {
@@ -157,13 +170,19 @@ form > a {
   width: var(--cell-size);
   height: var(--cell-size);
   text-align: center;
-  color: black;
+  color: rgb(85, 85, 241);
   caret-color: transparent;
-  font-size: 1.75vw;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 2.3vw;
+  font-weight: 400;
   border-radius: 0;
   border: none;
   padding: 0;
   margin: 0;
+}
+
+.fixed {
+  color: black;
 }
 
 .cell:focus { 
@@ -210,7 +229,7 @@ tr:nth-child(3n+1){
 
 td {
   text-align: center;
-  border: solid calc(var(--sudoku-border-size)/2 )var(--sudoku-border-colour);
+  border: solid calc(var(--sudoku-border-size)/4 ) rgb(143, 142, 142);
 }
 
 .numpad {

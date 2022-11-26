@@ -36,4 +36,5 @@ if (sessionStorage.getItem("board")) {
             }
         }
     }
+    sTable.style.filter = null;
 }
