@@ -1,5 +1,16 @@
 <?php 
 include 'sudoku.php';
+
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     if (isset($_POST["Yes"])) {
+//         echo $_POST["time"];
+//     } elseif (isset($_POST["No"])) {
+
+//     } else {
+//         echo "bruh";
+//     }
+// }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +27,18 @@ include 'sudoku.php';
         ?>
         <div class="body">
             <div class="grid-div">
+                <div id="logtime" style="display: none;">
+                    <div id="container">
+                        You Won!<br>Would you like to record this attempt?<br>
+                        <form style="display: inline;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+                            <input type="text" name="time" id="timephp">
+                            <input name="Yes" value="Yes" type="button">
+                        </form>
+                        <form style="display: inline;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+                            <input name="No" value="No" type="submit">
+                        </form>
+                    </div>
+                </div>
                 <table id="grid" class="blurred">
                     <tr>
                         <td><input id="cell-0" class="cell" type="text" value="5" ></td>
@@ -146,10 +169,10 @@ include 'sudoku.php';
             </div>
             <div class="numpad">
                 <div id="timer">
-                    
                 </div>
                 <div id="diffSelect">
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get">
+                    <form id="difficulties" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                        <input type="text" name="difficult" id="difficult" style="display: none;">
                         <input type="button" id="ez" name="diff" value="Easy">
                         <input type="button" id="md" name="diff" value="Medium">
                         <input type="button" id="hd" name="diff" value="Hard">
@@ -178,4 +201,28 @@ include 'sudoku.php';
     <script src="Resources/Scripts/sudokuHandler.js"></script>
     <script src="Resources/Scripts/animator.js"></script>
     <script src="Resources/Scripts/animator2.js"></script>
+    <?php
+        if (isset($_SESSION["time"])) {
+            if (isset($_SESSION["uID"])) {
+                recordTime($_SESSION['uID'], $_SESSION['difficulty'], $_SESSION['time']);
+                unset($_SESSION['time']);
+            } else {
+                $scriptInject = "";
+                $scriptInject .= "<script>\n";
+                $scriptInject .= "clearInterval(timerInterval);\n";
+                $scriptInject .= "timerArea.innerText = '" . str_pad(floor((int)$_SESSION["time"]/(1000*60)), 2, '0', STR_PAD_LEFT) . ":";
+                $scriptInject .= str_pad(floor((int)$_SESSION["time"]/1000) % 60, 2, '0', STR_PAD_LEFT) . ":";
+                $scriptInject .= str_pad(floor((int)$_SESSION["time"] % 1000 / 10), 2, '0', STR_PAD_LEFT) . "';";
+                $scriptInject .= "document.getElementById('logtime').style.display = null;";
+                $scriptInject .= "document.getElementById('logtime').style.background = 'rgba(0, 0, 0, 0.2)';";
+                $scriptInject .= "tolog();";
+                $scriptInject .= "if (overlay.style.display !== 'none') {overlay.style.display = 'none';} else {overlay.style.display = 'flex';}";
+                $scriptInject .= "</script>";
+                echo $scriptInject;
+            }
+
+            // unset($_SESSION["time"]);
+
+        }
+    ?>
 </html>

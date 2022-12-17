@@ -13,6 +13,7 @@
         $encrypted_pw = sha1($pw.$salt);
         $res = mysqli_query($conn, "INSERT INTO acc VALUES(NULL, '" . $uname . "', '" . $email . "', '" . $encrypted_pw . "');");
     }
+
     function Login($response, $pw) {
         global $conn;
         global $salt;
@@ -20,5 +21,10 @@
         $res = mysqli_query($conn, "SELECT uID, username FROM acc WHERE " . $response[2] . "= '" . $response[3] .
                                    "' AND pw = '" . $encrypted_pw . "';");
         return $res -> fetch_assoc();
+    }
+
+    function recordTime($uID, $difficulty, $time) {
+        global $conn;
+        $res = mysqli_query($conn, "INSERT INTO logs VALUES (NULL, ". $uID .", '" . $difficulty . "', " . $time . ")");
     }
 ?>

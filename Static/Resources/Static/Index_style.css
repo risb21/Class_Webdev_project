@@ -144,18 +144,36 @@ form > a {
 .grid-div {
   height: 100%;
   top: 50%;
-  visibility: visible;
   flex: 3;
-  /* background: #222222; */
-  margin: 0;
-  padding: 0;
-  /* display: block; */
+  margin: auto 0;
+  padding: auto 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logtime {
+  width: calc(var(--cell-size) * 9 + 2vh);
+  height: calc(var(--cell-size) * 9 + 2vh);
+  position: absolute;
+  background: rgba(0, 0, 0, 0);
+  color: rgb(255, 255, 255);
+  font-size: 3em;
+  transition: all 1000ms ease;
+}
+
+#timephp {
+  display: none;
+}
+
+#container {
+  padding: 2em 0;
 }
 
 #grid {
-  margin: auto auto;
   transition: 0.2s ease-in-out filter 0.1s;
-  box-shadow: 20px black;
+  box-shadow: 0 0 20px rgb(57, 57, 57);
 }
 
 .blurred {
@@ -236,9 +254,17 @@ td {
   border: solid calc(var(--sudoku-border-size)/4 ) rgb(143, 142, 142);
 }
 
-/* #diffSelect{
-  padding: auto;
-} */
+#timer {
+  padding: 3vh;
+  text-align: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: rgb(85, 85, 241);;
+  font-size: 3em;
+}
+
+#diffSelect {
+  text-align: center;
+}
 
 #diffSelect > form > input:not(#xt) {
   width: 7vw;

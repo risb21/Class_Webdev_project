@@ -2,6 +2,11 @@
 session_start();
 include ('validation.php');
 include ('connection.php');
+
+if (!(isset($_SESSION["difficulty"]))) {
+    $_SESSION["difficulty"] = "Medium";
+}
+
 $loggedinstr = "<form method='POST' action='" . $_SERVER['PHP_SELF'] .
                "'  id='logout'>". " <input type='submit'  id='LO' value='Log Out' name='logout'></form>";
 $defaultstr = "<a id='login' href='#'>Log In</a><a id='signup' href='#'>Sign up</a>";
@@ -50,6 +55,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } 
         }
     }
+
+    if (isset($_POST["time"])) {
+        $_SESSION["time"] = $_POST["time"];
+    }
+    if (isset($_POST["No"])) {
+        if (isset($_SESSION["time"])) {
+            unset($_SESSION['time']);
+        }
+    }
+    if (isset($_POST["difficult"])) {
+        $_SESSION['difficulty'] = $_POST["difficult"];
+    }
+
     header("Location: ".$_SERVER['PHP_SELF']);
     exit;
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -73,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if (isset($_SESSION['submit-status'])) {
         echo $_SESSION['submit-status'];
-        unset($_SESSION['submit-status']);
+        // unset($_SESSION['submit-status']);
     }
 }
 
@@ -81,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="header">
     <div id="left">Sudoku</div>
     <div id="right">
-        <a href="#">Leaderboard</a><?php if (!isset($_SESSION['uID'])) { 
+        <a href="leaderboard.php">Leaderboard</a><?php if (!isset($_SESSION['uID'])) { 
             echo $defaultstr;
         } else {
             echo $loggedinstr.$_SESSION['username']; 
@@ -118,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </div>
 <?php
-    if (isset($_SESSION['submit_status'])) {
+    if (isset($_SESSION['submit-status'])) {
         unset($_SESSION['submit-status']);
     }
 ?>

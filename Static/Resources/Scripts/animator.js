@@ -95,23 +95,28 @@ function tolog() {
     formDiv.style.margin = "0 0 0 0%";
 }
 
-login.onclick = () => {
-    tolog();
-    if (overlay.style.display !== "none") {
-        overlay.style.display = "none";
-    } else {
-        overlay.style.display = "flex";
-    }
-};
+if (login) {
+    login.onclick = () => {
+        tolog();
+        if (overlay.style.display !== "none") {
+            overlay.style.display = "none";
+        } else {
+            overlay.style.display = "flex";
+        }
+    };
+}
 
-signup.onclick = () => {
-    tosign();
-    if (overlay.style.display !== "none") {
-        overlay.style.display = "none";
-    } else {
-        overlay.style.display = "flex";
+if (signup) {
+    signup.onclick = () => {
+        tosign();
+        if (overlay.style.display !== "none") {
+            overlay.style.display = "none";
+        } else {
+            overlay.style.display = "flex";
+        }
     }
 }
+
 
 function hideOverlay() {
     overlay.style.display = "none";
@@ -289,6 +294,8 @@ function diffClickHandle(e) {
             diff = 66;
             break;
     }
+    document.getElementById("difficult").value = e.value;
+    console.log(document.getElementById("difficult").value);
     Handle(-120, true);
 }
 
@@ -339,7 +346,7 @@ Array.from(numpad).forEach((e) => {
                     cellNo *= -1;
                 }
             }
+            isFilled();
         }
-
     });
 });

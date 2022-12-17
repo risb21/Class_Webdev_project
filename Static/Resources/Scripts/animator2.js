@@ -17,7 +17,7 @@ document.body.addEventListener("click", (e) => {
 let timerArea = document.getElementById("timer");
 
 function timerUpdate() {
-    let duration = Date.now() - startTime;
+    duration = Date.now() - startTime;
     let timestr = "";
     timestr += String(Math.floor((duration / (60*1000)) % (60))).padStart(2, "0") + ":";
     timestr += String(Math.floor((duration / (1000) % 60))).padStart(2, "0") + ":";
@@ -26,3 +26,8 @@ function timerUpdate() {
 }
 
 const timerInterval = setInterval(timerUpdate, 10);
+
+yesbtn.addEventListener("click", () => {
+    yesbtn.previousElementSibling.value = endTime - startTime;
+    yesbtn.parentElement.submit();
+})

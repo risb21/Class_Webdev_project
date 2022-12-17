@@ -1,6 +1,8 @@
 const cells = document.getElementsByClassName('cell');
 let sTable = document.getElementById("grid");
 let endTime = Date.now() + (1000*60*60);
+let duration = endTime;
+let yesbtn = document.getElementsByName("Yes")[0];
 
 let startTime = Date.now();
 
@@ -19,7 +21,7 @@ function Handle(diff="", override = false) {
             boards = eval(boards);
             sessionStorage.setItem("board", boards[0]);
             sessionStorage.setItem("puzzle", boards[1]);
-            location.reload();
+            document.getElementById("difficulties").submit();
         }
         xhttp.open("GET", "requestHandler.php?diff="+diff, true);
         xhttp.send();
@@ -75,5 +77,8 @@ function isFilled() {
         timestr += String(Math.floor((duration / (1000) % 60))).padStart(2, "0") + ":";
         timestr += String(Math.floor((duration / 10) % 100)).padStart(2, "0");
         console.log(timestr);
+        document.getElementById("logtime").style.display = null;
+        document.getElementById("logtime").style.background = "rgba(0, 0, 0, 0.2)";
+        document.body.click();
     }
 }
