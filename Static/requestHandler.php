@@ -1,6 +1,13 @@
 <?php 
 include 'sudoku.php';
-
-echo json_encode(makeUniquePuzzle(0.75));
+$diff=0;
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if (isset($_GET["diff"])) {
+        $diff = (int) $_GET["diff"];
+    } else {
+        $diff = 50;
+    }
+}
+echo json_encode(makeUniquePuzzle($diff/100));
 
 ?>

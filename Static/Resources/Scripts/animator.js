@@ -8,19 +8,13 @@ let toForm = document.getElementById("toLog");
 let signForm = document.getElementsByClassName("signupForm")[0];
 let logForm = document.getElementsByClassName("loginForm")[0];
 let formDiv = document.getElementsByClassName("form-div")[0];
+let diff = 0.5;
 
-let sTable = document.getElementById("grid");
 sTable.boxShadow = "20px black";
-
-var sBoard, sPuzzle;
-sPuzzleArr = Array();
-sBoardArr = Array();
-
-let newPrev = null;
 
 // Highlights box, row, col and value in cell
 function highlight( e ) {
-    if (newPrev) { unfocus(newPrev); }
+    if (prevActiveElement) { unfocus(prevActiveElement); }
     var cellNo = Number(e.id.slice(-2));
     if (cellNo <= 0) {
         cellNo *= -1;
@@ -49,10 +43,9 @@ function highlight( e ) {
             ex.style.filter = "brightness(83%)";
         }
     });
-    focussedInd = cellNo;
 }
 
-function unfocus( e ) {
+function unfocus(e) {
     var cellNo = Number(e.id.slice(-2));
     if (cellNo <= 0) {
         cellNo *= -1;
@@ -78,7 +71,6 @@ function unfocus( e ) {
             ex.style.filter = null;
         }
     });
-    focussedInd = -1;
 }
 
 function tosign() {
@@ -149,11 +141,6 @@ toLog.onclick = () => {
     tolog();
 }
 
-const cells = document.getElementsByClassName('cell');
-// Array.from(cells).forEach( (e) => {
-//         e.addEventListener("focusin", highlight(e));
-//         e.addEventListener("focusout", unfocus(e));
-// });
 // const cells = document.getElementsByClassName('cell');
 
 // Sets cursor to the end, consistent input
@@ -165,23 +152,55 @@ Array.from(cells).forEach( (e) => {
     })
 });
 
-Array.from(cells).forEach( (e) => {
-    e.addEventListener("focusin", (event) => {
+function errorHandle(e) {
+    let index = e.id.slice(-2)
+    if (index <= 0) {
+        index *= -1;
+    }
+    if (e.value.length > 1) {
+        if (/[1-9]/.test(e.value[1])) {
+            if (e.value[1] == e.value[0]) {
+                if (e.classList.contains("fixed")) {
+                    e.value = e.value[0];
+                } else {
+                    e.value = e.value[0];
+                    unfocus(e);
+                    e.value = null;
+                    highlight(e);
+                    e.style.background = null;
+                }
+            } else {
+                if (e.classList.contains("fixed")) {
+                    e.value = e.value[0];
+                } else {
+                    let temp = e.value;
+                    e.value = temp[0];
+                    unfocus(e);
+                    e.value = temp[1];
+                    highlight(e);
+                    if (Number(e.value) == sBoardArr[Math.floor(index/9)][index%9]) {
+                        e.style.color = null;
+                    } else {
+                        e.style.color = "#EE3333";
+                    }
+                }                 
+            }
+        } else {
+            e.value = e.value[0];
+        }
+    } else {
+        if (!(/[1-9]/.test(e.value))) {
+            e.value = null;
+        } else {
+            if (Number(e.value) == sBoardArr[Math.floor(index/9)][index%9]) {
+                e.style.color = null;
+            } else {
+                e.style.color = "#EE3333";
+            }
+        }
         highlight(e);
-        prevFocus = document.activeElement;
-        // console.log(prevFocus);
-        // console.log(event.relatedTarget)
-    });
-});
-
-Array.from(cells).forEach( (e) => {
-    e.addEventListener("focusout", (event) => {
-        unfocus(e);
-        
-        // prevFocus = event.relatedTarget;
-        // console.log(prevFocus);
-    });
-});
+    }
+}
 
 /* Listens to inputs to cells, handles highlighting for 
 each cell, and will also handle mistakes counter. */
@@ -213,10 +232,8 @@ Array.from(cells).forEach( (e) => {
                         e.value = temp[1];
                         highlight(e);
                         if (Number(e.value) == sBoardArr[Math.floor(index/9)][index%9]) {
-                            console.log("equal: ", e.value, " and ", sBoardArr[Math.floor(index/9)][index%9]);
                             e.style.color = null;
                         } else {
-                            console.log("Not equal!");
                             e.style.color = "#EE3333";
                         }
                     }                 
@@ -229,10 +246,8 @@ Array.from(cells).forEach( (e) => {
                 e.value = null;
             } else {
                 if (Number(e.value) == sBoardArr[Math.floor(index/9)][index%9]) {
-                    console.log("equal: ", e.value, " and ", sBoardArr[Math.floor(index/9)][index%9]);
                     e.style.color = null;
                 } else {
-                    console.log("Not equal!");
                     e.style.color = "#EE3333";
                 }
             }
@@ -240,13 +255,6 @@ Array.from(cells).forEach( (e) => {
         }
     })
 })
-
-// Array.from(cells).forEach( (e) => {
-//     e.addEventListener("focusout", (event => {
-//         event.stopPropagation();
-//         prevFocus = document.activeElement;
-//     }))
-// });
 
 eyeBtn1 = document.getElementsByClassName("eye")[0];
 pw1 = document.getElementById("password-log");
@@ -259,6 +267,32 @@ eyeBtn1.onclick = () => {
     }
 }
 
+let diffculties = Array.from(document.getElementsByName("diff"));
+
+diffculties.forEach((e) => {
+    e.addEventListener("click", () => {
+        if (localStorage.getItem("board")) {
+            localStorage.removeItem("board");
+            localStorage.removeItem("puzzle");
+        }
+        switch (e.value) {
+            case "Easy":
+                diff = 33;
+                break;
+            case "Medium":
+                diff = 50;
+                break;
+            case "Hard":
+                diff = 80;
+                break;
+            default:
+                diff = 66;
+                break;
+        }
+        Handle(diff, true);
+    });
+})
+
 document.body.onkeydown = (event) => {
     if (event.key === "Escape") {
         hideOverlay();
@@ -266,54 +300,37 @@ document.body.onkeydown = (event) => {
 }
 
 let numpad = document.getElementsByClassName("num");
-let sentinel = true;
-let prevFocus = null;
-let sent2 = true;
-let prev = false;
+let prevActiveElement = null;
 
 Array.from(numpad).forEach((e) => {
-    e.onclick = () => {
-        sent2 = false;
-        console.log("hi");
-    }
     e.addEventListener("click", () => {
-        // sent2 = false;
-
-        console.log(e.target);
-        // if (sentinel || prev) {
-            console.log(newPrev);
+        if (prevActiveElement.classList.contains("cell")) {
             var cellNo = Number(e.id.slice(-2));
             if (cellNo <= 0) {
                 cellNo *= -1;
             }
-            // unfocus(prevFocus);
-            if (prevFocus.value == e.innerHTML) {
-                unfocus(prevFocus)
-                prevFocus.value = null;
+            if (prevActiveElement.value == e.innerHTML) {
+                unfocus(prevActiveElement);
+                prevActiveElement.value = null;
+                
             } else {
-                unfocus(prevFocus);
-                prevFocus.value = e.innerHTML;
-                // console.log("HI");
+                unfocus(prevActiveElement);
+                prevActiveElement.value = e.innerHTML;
+                let index = prevActiveElement.id.slice(-2);
+                if (index <= 0) {
+                    index *= -1;
+                }
+                if (Number(prevActiveElement.value) == sBoardArr[Math.floor(index/9)][index%9]) {
+                    prevActiveElement.style.color = null;
+                } else {
+                    prevActiveElement.style.color = "#EE3333";
+                }
             }
             var cellNo = Number(e.id.slice(-2));
             if (cellNo <= 0) {
                 cellNo *= -1;
             }
-            highlight(prevFocus);
-            newPrev = prevFocus;
-            prev = true;
-        // }
+        }
+
     });
 });
-
-
-
-// document.body.addEventListener("click", () => {
-//     if (sent2) {
-//         sentinel = false;
-//         prev = false;
-//     } else {
-//         sentinel = true;
-//         prev = true;
-//     }
-// });

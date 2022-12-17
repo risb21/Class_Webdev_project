@@ -145,6 +145,14 @@ include 'sudoku.php';
                 </table>
             </div>
             <div class="numpad">
+                <div id="diffSelect">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get">
+                        <input type="button" name="diff" value="Easy">
+                        <input type="button" name="diff" value="Medium">
+                        <input type="button" name="diff" value="Hard">
+                        <input type="button" name="diff" value="Expert">
+                    </form>
+                </div>
                 <div class="numpadCont">
                     <div class="aCont"><a class="num" href="#">1</a></div>
                     <div class="aCont"><a class="num" href="#">2</a></div>
@@ -159,6 +167,12 @@ include 'sudoku.php';
             </div>
         </div>
     </body>
-    <script src="Resources/Scripts/animator.js"></script>
+    <script>
+        var sBoard, sPuzzle;
+        sPuzzleArr = Array();
+        sBoardArr = Array();
+    </script>
     <script src="Resources/Scripts/sudokuHandler.js"></script>
+    <script src="Resources/Scripts/animator.js"></script>
+    <script src="Resources/Scripts/animator2.js"></script>
 </html>

@@ -109,7 +109,7 @@
     function puzzleMaker($board, $difficulty, $validIndex) {
 
         // Mapping difficulty from 0 to 1 to number of iterations (from 25 to 53)
-        $diffMap = floor($difficulty * 28) + 25;
+        $diffMap = floor($difficulty * 23) + 30;
 
         $puzzle = $board;
 
