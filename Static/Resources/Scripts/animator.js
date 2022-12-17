@@ -269,27 +269,33 @@ eyeBtn1.onclick = () => {
 
 let diffculties = Array.from(document.getElementsByName("diff"));
 
+function diffClickHandle(e) {
+    if (localStorage.getItem("board")) {
+        localStorage.removeItem("board");
+        localStorage.removeItem("puzzle");
+    }
+    switch (e.value) {
+        case "Easy":
+            diff = 33;
+            break;
+        case "Medium":
+            diff = 50;
+            break;
+        case "Hard":
+            diff = 80;
+            break;
+        default:
+            diff = 66;
+            break;
+    }
+    Handle(diff, true);
+}
+
 diffculties.forEach((e) => {
     e.addEventListener("click", () => {
-        if (localStorage.getItem("board")) {
-            localStorage.removeItem("board");
-            localStorage.removeItem("puzzle");
-        }
-        switch (e.value) {
-            case "Easy":
-                diff = 33;
-                break;
-            case "Medium":
-                diff = 50;
-                break;
-            case "Hard":
-                diff = 80;
-                break;
-            default:
-                diff = 66;
-                break;
-        }
-        Handle(diff, true);
+        sTable.classList.add("blurred");
+        console.log(sTable.classList);
+        diffClickHandle(e);
     });
 })
 

@@ -13,3 +13,16 @@ document.body.addEventListener("click", (e) => {
     }
     prevActiveElement = document.activeElement;
 })
+
+let timerArea = document.getElementById("timer");
+
+function timerUpdate() {
+    let duration = Date.now() - startTime;
+    let timestr = "";
+    timestr += String(Math.floor((duration / (60*1000)) % (60))).padStart(2, "0") + ":";
+    timestr += String(Math.floor((duration / (1000) % 60))).padStart(2, "0") + ":";
+    timestr += String(Math.floor((duration / 10) % 100)).padStart(2, "0");
+    timerArea.innerText = timestr;
+}
+
+setInterval(timerUpdate, 10);

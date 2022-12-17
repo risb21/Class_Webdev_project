@@ -16,7 +16,7 @@ include 'sudoku.php';
         ?>
         <div class="body">
             <div class="grid-div">
-                <table id="grid" style="filter: blur(8px);">
+                <table id="grid" class="blurred">
                     <tr>
                         <td><input id="cell-0" class="cell" type="text" value="5" ></td>
                         <td><input id="cell-1" class="cell" type="text" value="3" ></td>
@@ -145,12 +145,15 @@ include 'sudoku.php';
                 </table>
             </div>
             <div class="numpad">
+                <div id="timer">
+                    
+                </div>
                 <div id="diffSelect">
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get">
-                        <input type="button" name="diff" value="Easy">
-                        <input type="button" name="diff" value="Medium">
-                        <input type="button" name="diff" value="Hard">
-                        <input type="button" name="diff" value="Expert">
+                        <input type="button" id="ez" name="diff" value="Easy">
+                        <input type="button" id="md" name="diff" value="Medium">
+                        <input type="button" id="hd" name="diff" value="Hard">
+                        <input type="button" id="xt" name="diff" value="Expert">
                     </form>
                 </div>
                 <div class="numpadCont">

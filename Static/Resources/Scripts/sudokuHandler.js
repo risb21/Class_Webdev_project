@@ -1,6 +1,8 @@
 const cells = document.getElementsByClassName('cell');
 let sTable = document.getElementById("grid");
 
+let startTime = Date.now();
+
 var sBoard, sPuzzle;
 sPuzzleArr = Array();
 sBoardArr = Array();
@@ -8,6 +10,7 @@ sBoardArr = Array();
 var boards;
 function Handle(diff="", override = false) {
     if (!(sessionStorage.getItem("board")) || override) {
+        console.log("hi");
         var xhttp = new XMLHttpRequest();
         
         xhttp.onload = function() {
@@ -17,7 +20,6 @@ function Handle(diff="", override = false) {
             sessionStorage.setItem("puzzle", boards[1]);
             location.reload();
         }
-        console.log(diff);
         xhttp.open("GET", "requestHandler.php?diff="+diff, true);
         xhttp.send();
     }
@@ -45,7 +47,8 @@ function Handle(diff="", override = false) {
                 }
             }
         }
-        sTable.style.filter = null;
+        sTable.classList.remove("blurred");
+        startTime = Date.now();
     }
 }
 Handle(50);
