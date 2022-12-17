@@ -25,4 +25,4 @@ function timerUpdate() {
     timerArea.innerText = timestr;
 }
 
-setInterval(timerUpdate, 10);
+const timerInterval = setInterval(timerUpdate, 10);

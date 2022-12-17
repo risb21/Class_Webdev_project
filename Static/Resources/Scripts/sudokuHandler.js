@@ -1,5 +1,6 @@
 const cells = document.getElementsByClassName('cell');
 let sTable = document.getElementById("grid");
+let endTime = Date.now() + (1000*60*60);
 
 let startTime = Date.now();
 
@@ -51,4 +52,28 @@ function Handle(diff="", override = false) {
         startTime = Date.now();
     }
 }
+
 Handle(50);
+let currentState = [];
+
+function isFilled() {
+    currentState = [];
+    let temp = [];
+    for (let i = 0; i < 9; i++) {
+        temp = []
+        for (let j = 0; j < 9; j++) {
+            temp.push(Number(cells[i*9+j].value));
+        }
+        currentState.push(temp);
+    }
+    if (String(currentState) == String(sBoardArr)) {
+        endTime = Date.now();
+        clearInterval(timerInterval);
+        let duration = endTime - startTime;
+        let timestr = "";
+        timestr += String(Math.floor((duration / (60*1000)) % (60))).padStart(2, "0") + ":";
+        timestr += String(Math.floor((duration / (1000) % 60))).padStart(2, "0") + ":";
+        timestr += String(Math.floor((duration / 10) % 100)).padStart(2, "0");
+        console.log(timestr);
+    }
+}

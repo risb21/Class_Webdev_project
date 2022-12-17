@@ -253,6 +253,7 @@ Array.from(cells).forEach( (e) => {
             }
             highlight(e);
         }
+        isFilled();
     })
 })
 
@@ -288,7 +289,7 @@ function diffClickHandle(e) {
             diff = 66;
             break;
     }
-    Handle(diff, true);
+    Handle(-120, true);
 }
 
 diffculties.forEach((e) => {
@@ -310,31 +311,33 @@ let prevActiveElement = null;
 
 Array.from(numpad).forEach((e) => {
     e.addEventListener("click", () => {
-        if (prevActiveElement.classList.contains("cell")) {
-            var cellNo = Number(e.id.slice(-2));
-            if (cellNo <= 0) {
-                cellNo *= -1;
-            }
-            if (prevActiveElement.value == e.innerHTML) {
-                unfocus(prevActiveElement);
-                prevActiveElement.value = null;
-                
-            } else {
-                unfocus(prevActiveElement);
-                prevActiveElement.value = e.innerHTML;
-                let index = prevActiveElement.id.slice(-2);
-                if (index <= 0) {
-                    index *= -1;
+        if (!prevActiveElement.classList.contains("fixed")) {
+            if (prevActiveElement.classList.contains("cell")) {
+                var cellNo = Number(e.id.slice(-2));
+                if (cellNo <= 0) {
+                    cellNo *= -1;
                 }
-                if (Number(prevActiveElement.value) == sBoardArr[Math.floor(index/9)][index%9]) {
-                    prevActiveElement.style.color = null;
+                if (prevActiveElement.value == e.innerHTML) {
+                    unfocus(prevActiveElement);
+                    prevActiveElement.value = null;
+                    
                 } else {
-                    prevActiveElement.style.color = "#EE3333";
+                    unfocus(prevActiveElement);
+                    prevActiveElement.value = e.innerHTML;
+                    let index = prevActiveElement.id.slice(-2);
+                    if (index <= 0) {
+                        index *= -1;
+                    }
+                    if (Number(prevActiveElement.value) == sBoardArr[Math.floor(index/9)][index%9]) {
+                        prevActiveElement.style.color = null;
+                    } else {
+                        prevActiveElement.style.color = "#EE3333";
+                    }
                 }
-            }
-            var cellNo = Number(e.id.slice(-2));
-            if (cellNo <= 0) {
-                cellNo *= -1;
+                var cellNo = Number(e.id.slice(-2));
+                if (cellNo <= 0) {
+                    cellNo *= -1;
+                }
             }
         }
 
