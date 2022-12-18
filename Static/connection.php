@@ -30,7 +30,7 @@
     
     function leaderboard($difficulty) {
         global $conn;
-        $res = mysqli_query($conn, "SELECT logs.*, acc.username FROM logs NATURAL JOIN acc WHERE difficulty = '" . $difficulty . "' ORDER BY time asc;");
+        $res = mysqli_query($conn, "SELECT logs.*, acc.username FROM logs NATURAL JOIN acc WHERE difficulty = '" . $difficulty . "' ORDER BY time asc LIMIT 10;");
         $lb = array();
         while ($record = $res -> fetch_assoc()) {
             array_push($lb, $record);

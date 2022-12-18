@@ -39,17 +39,15 @@
             }
             if (isset($_SESSION['diff'])) {
                 $lb = leaderboard($_SESSION["diff"]);
-                unset($_SESSION['diff']);
-                unset($_SESSION['data']);
             }
         }
     ?>
     <div id="diffSelect">
         <form id="difficulties" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
-            <input type="submit" id="ez" name="Easy" value="Easy">
-            <input type="submit" id="md" name="Medium" value="Medium">
-            <input type="submit" id="hd" name="Hard" value="Hard">
-            <input type="submit" id="xt" name="Expert" value="Expert">
+            <input type="submit" class="ez" name="Easy" value="Easy">
+            <input type="submit" class="md" name="Medium" value="Medium">
+            <input type="submit" class="hd" name="Hard" value="Hard">
+            <input type="submit" class="xt" name="Expert" value="Expert">
         </form>
     </div>
     <div id="leaderboard">
@@ -81,5 +79,20 @@
         </div>
     </div>
 </body>
-<script src="Resources/Scripts/leaderboardHandler.js"></script>
+<script>
+    <?php
+        if (isset($_SESSION['diff'])) {
+            $base = "document.getElementsByName('" . $_SESSION['diff'] . "')[0]";
+            if ($_SESSION['diff'] == "Easy") {
+                echo $base.".classList.add('ezperm')";
+            } elseif ($_SESSION['diff'] == "Medium") {
+                echo $base.".classList.add('mdperm')";
+            } elseif ($_SESSION['diff'] == "Hard") {
+                echo $base.".classList.add('hdperm')";
+            } elseif ($_SESSION['diff'] == "Expert") {
+                echo $base.".classList.add('xtperm')";
+            }
+        }
+    ?>
+</script>
 </html>

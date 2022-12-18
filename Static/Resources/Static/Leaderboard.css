@@ -27,7 +27,7 @@ body {
 }
 
 #head {
-    border-bottom: black solid 2px;
+    border-bottom: #d2a94b solid 2px;
 }
 
 .records {
@@ -39,13 +39,13 @@ body {
 .position {
     flex: 2;
     padding: 0.4em;
-    border-right: black solid 2px;
+    border-right: #d2a94b solid 2px;
 }
 
 .username {
     flex: 5;
     padding: 0.4em;
-    border-right: black solid 2px;
+    border-right: #d2a94b solid 2px;
 }
 
 .time {

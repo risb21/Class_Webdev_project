@@ -173,10 +173,10 @@ include 'sudoku.php';
                 <div id="diffSelect">
                     <form id="difficulties" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                         <input type="text" name="difficult" id="difficult" style="display: none;">
-                        <input type="button" id="ez" name="diff" value="Easy">
-                        <input type="button" id="md" name="diff" value="Medium">
-                        <input type="button" id="hd" name="diff" value="Hard">
-                        <input type="button" id="xt" name="diff" value="Expert">
+                        <input type="button" class="ez Easy" name="diff" value="Easy">
+                        <input type="button" class="md Medium" name="diff" value="Medium">
+                        <input type="button" class="hd Hard" name="diff" value="Hard">
+                        <input type="button" class="xt Expert" name="diff" value="Expert">
                     </form>
                 </div>
                 <div class="numpadCont">
@@ -220,9 +220,23 @@ include 'sudoku.php';
                 $scriptInject .= "</script>";
                 echo $scriptInject;
             }
+        }
 
-            // unset($_SESSION["time"]);
-
+        if (isset($_SESSION['difficulty'])) {
+            echo "<script>";
+            if (isset($_SESSION['difficulty'])) {
+                $base = "document.getElementsByClassName('" . $_SESSION['difficulty'] . "')[0]";
+                if ($_SESSION['difficulty'] == "Easy") {
+                    echo $base.".classList.add('ezperm')";
+                } elseif ($_SESSION['difficulty'] == "Medium") {
+                    echo $base.".classList.add('mdperm')";
+                } elseif ($_SESSION['difficulty'] == "Hard") {
+                    echo $base.".classList.add('hdperm')";
+                } elseif ($_SESSION['difficulty'] == "Expert") {
+                    echo $base.".classList.add('xtperm')";
+                }
+            }
+            echo "</script>";
         }
     ?>
 </html>
