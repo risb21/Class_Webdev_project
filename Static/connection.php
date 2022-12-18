@@ -25,6 +25,17 @@
 
     function recordTime($uID, $difficulty, $time) {
         global $conn;
-        $res = mysqli_query($conn, "INSERT INTO logs VALUES (NULL, ". $uID .", '" . $difficulty . "', " . $time . ")");
+        $res = mysqli_query($conn, "INSERT INTO logs VALUES (NULL, ". $uID .", '" . $difficulty . "', " . $time . ");");
     }
+    
+    function leaderboard($difficulty) {
+        global $conn;
+        $res = mysqli_query($conn, "SELECT logs.*, acc.username FROM logs NATURAL JOIN acc WHERE difficulty = '" . $difficulty . "' ORDER BY time asc;");
+        $lb = array();
+        while ($record = $res -> fetch_assoc()) {
+            array_push($lb, $record);
+        }
+        return $lb;    
+    }
+
 ?>

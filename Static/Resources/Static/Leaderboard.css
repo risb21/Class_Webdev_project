@@ -1,0 +1,54 @@
+body {
+    height: 100%;
+    background: rgb(38, 38, 38);
+}
+
+#right > a {
+    padding: auto 2em;
+}
+
+#diffSelect {
+    padding: 2em 0;
+}
+
+#leaderboard {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2em;
+}
+
+#contain {
+    border-radius: 20px;
+    overflow: hidden;
+    width: 55%;
+}
+
+#head {
+    border-bottom: black solid 2px;
+}
+
+.records {
+    text-align: center;
+    display: flex;
+    width: 100%;
+}
+
+.position {
+    flex: 2;
+    padding: 0.4em;
+    border-right: black solid 2px;
+}
+
+.username {
+    flex: 5;
+    padding: 0.4em;
+    border-right: black solid 2px;
+}
+
+.time {
+    flex: 2;
+    padding: 0.4em;
+}

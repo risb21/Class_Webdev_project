@@ -295,8 +295,7 @@ function diffClickHandle(e) {
             break;
     }
     document.getElementById("difficult").value = e.value;
-    console.log(document.getElementById("difficult").value);
-    Handle(-120, true);
+    Handle(diff, true);
 }
 
 diffculties.forEach((e) => {
