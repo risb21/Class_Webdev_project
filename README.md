@@ -1,2 +1,2 @@
 # Class_Webdev_project
-idk man php is ass
+A sudoku game website, with leader board for separate difficulties.
